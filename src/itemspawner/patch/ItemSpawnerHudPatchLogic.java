@@ -12,31 +12,39 @@ import necesse.gfx.ui.ButtonTexture;
 
 public class ItemSpawnerHudPatchLogic {
 
+    // Cache da textura para evitar recarregar do disco sempre que a janela for redimensionada
+    private static ButtonTexture cachedButtonTexture;
+
+    private static ButtonTexture getButtonTexture() {
+        if (cachedButtonTexture == null) {
+            GameTexture rawTex = GameTexture.fromFile("itemspawner/icon.png");
+            cachedButtonTexture = new ButtonTexture(rawTex, Color.WHITE);
+        }
+        return cachedButtonTexture;
+    }
+
     public static void apply(MainGameFormManager formManager) {
         if (formManager == null) {
             return;
         }
 
-        // Inicializa a janela do menu
+        // Inicializa (ou restaura o estado anterior após redimensionamento) a janela do menu
         ItemSpawnerForm.init(formManager);
 
         // Cria o botão para a barra rápida (HUD)
         try {
-            ButtonTexture texture = new ButtonTexture(
-                GameTexture.fromFile("itemspawner/icon.png"),
-                Color.WHITE
-            );
+            ButtonTexture texture = getButtonTexture();
 
             FormContentIconButton button = new FormContentIconButton(
                 0, 0,
                 FormInputSize.SIZE_32,
                 ButtonColor.BASE,
                 texture,
-                new StaticMessage("Cheat Menu & Spawner\nAtalho: [F6]")
+                new StaticMessage("Cheat Menu & Spawner v2.1\nAtalho: [F6]")
             );
 
             button.onClicked(e -> {
-                button.startCooldown(200);
+                button.startCooldown(150);
                 ItemSpawnerForm.toggle();
             });
 

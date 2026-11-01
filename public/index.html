@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Necesse Cheat Menu & Item Spawner v2.2</title>
+  <meta name="description" content="Painel de análise técnica, simulador interativo com Construtor de Vilarejo & Castelo e código-fonte otimizado do mod Necesse Cheat Menu & Item Spawner v2.2.0." />
+  <meta property="og:title" content="Necesse Cheat Menu & Item Spawner v2.2" />
+  <meta property="og:description" content="Painel de análise técnica, simulador interativo com Construtor de Vilarejo & Castelo e código-fonte otimizado do mod Necesse Cheat Menu & Item Spawner v2.2.0." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: radial-gradient(circle at top, #1b2838 0%, #0f1722 100%);
+      color: #e2e8f0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    .necesse-panel {
+      background: linear-gradient(180deg, #2a3b4c 0%, #1e2b38 100%);
+      border: 2px solid #4a6582;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    .necesse-btn {
+      background: linear-gradient(180deg, #3b5168 0%, #2b3d4f 100%);
+      border: 2px solid #587594;
+      transition: all 0.12s ease;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+    .necesse-btn:hover {
+      background: linear-gradient(180deg, #47627d 0%, #354b60 100%);
+      border-color: #7da2c9;
+    }
+    .necesse-btn-green {
+      background: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%);
+      border: 2px solid #66bb6a;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+    .necesse-btn-green:hover {
+      background: linear-gradient(180deg, #388e3c 0%, #2e7d32 100%);
+    }
+    .necesse-slot {
+      background: rgba(15, 23, 34, 0.75);
+      border: 2px solid #3c526b;
+      transition: all 0.1s ease;
+    }
+    .necesse-slot:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #7dd3fc;
+      transform: translateY(-1px);
+    }
+    .necesse-slot-fav {
+      background: rgba(234, 179, 8, 0.16);
+      border-color: #facc15;
+    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0f1722; }
+    ::-webkit-scrollbar-thumb { background: #3b5168; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #587594; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="border-b border-slate-700/80 bg-slate-900/80 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="/resources/itemspawner/icon.png" alt="Icon" class="w-9 h-9 rounded border border-amber-400/50 bg-slate-800 p-1 object-contain" onerror="this.style.display='none'" />
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold text-white tracking-tight">Necesse Cheat Menu & Item Spawner</h1>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">v2.2.0 + Gerador de Vilarejo</span>
+          </div>
+          <p class="text-xs text-slate-400">4 Abas: Spawner de Itens • Cheats de Jogador • Mundo/Mapa • 🏰 Construtor de Vilarejo, Castelo, Casas NPC & Salas de Baú</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="switchMainView('simulator')" id="nav-simulator" class="px-3.5 py-1.5 rounded text-sm font-medium bg-emerald-600 text-white shadow">
+          🏰 Simulador do Menu v2.2 (4 Abas)
+        </button>
+        <button onclick="switchMainView('audit')" id="nav-audit" class="px-3.5 py-1.5 rounded text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">
+          🔍 Análise & Melhorias (10)
+        </button>
+        <button onclick="switchMainView('code')" id="nav-code" class="px-3.5 py-1.5 rounded text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">
+          💻 Código-Fonte Java (14 arquivos)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-1">
+
+    <!-- VIEW 1: INTERACTIVE NECESSE CHEAT MENU SIMULATOR -->
+    <section id="view-simulator">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Left column: Simulated Necesse Form (600x520 style) -->
+        <div class="lg:col-span-7 flex flex-col items-center">
+          <div class="w-full max-w-[620px] necesse-panel rounded-lg p-3.5 select-none">
+            <!-- Window Titlebar -->
+            <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-600/70">
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-white text-base tracking-wide">Cheat Menu & Item Spawner v2.2.0</span>
+              </div>
+              <span class="px-2 py-0.5 text-xs rounded bg-slate-900/80 text-slate-300 border border-slate-600">Atalho: [F6] / [ESC]</span>
+            </div>
+
+            <!-- Top 4 Main Tabs -->
+            <div class="grid grid-cols-4 gap-1.5 mb-3">
+              <button onclick="selectSimTab(0)" id="sim-tab-0" class="necesse-btn py-1.5 rounded font-semibold text-xs sm:text-sm text-white">
+                📦 Itens
+              </button>
+              <button onclick="selectSimTab(1)" id="sim-tab-1" class="necesse-btn py-1.5 rounded font-semibold text-xs sm:text-sm text-white">
+                ⚡ Jogador
+              </button>
+              <button onclick="selectSimTab(2)" id="sim-tab-2" class="necesse-btn py-1.5 rounded font-semibold text-xs sm:text-sm text-white">
+                🌍 Mundo
+              </button>
+              <button onclick="selectSimTab(3)" id="sim-tab-3" class="necesse-btn-green py-1.5 rounded font-semibold text-xs sm:text-sm text-white">
+                🏰 Vilarejo
+              </button>
+            </div>
+
+            <!-- TAB 0: ITEM SPAWNER -->
+            <div id="sim-content-0" class="hidden space-y-2.5">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <div class="relative flex-1 min-w-[200px]">
+                  <input
+                    id="sim-search"
+                    type="text"
+                    placeholder="Buscar por nome ou ID..."
+                    oninput="renderSimItems()"
+                    class="w-full bg-slate-950/90 border-2 border-slate-600 focus:border-sky-400 rounded px-2.5 py-1 text-sm text-white outline-none"
+                  />
+                  <button onclick="document.getElementById('sim-search').value='';renderSimItems();" title="Limpar busca" class="absolute right-2 top-1 text-xs text-slate-400 hover:text-white">✕</button>
+                </div>
+                <div class="flex items-center gap-1" id="sim-amount-btns"></div>
+              </div>
+
+              <div class="grid grid-cols-6 gap-1.5" id="sim-category-btns"></div>
+
+              <div class="flex items-center justify-between text-xs text-slate-300 px-0.5">
+                <span id="sim-item-count">Itens: 0</span>
+                <span class="text-emerald-300">[Esq] Pegar Qtd • [Dir] Pegar x1 • [Meio/Alt] Favoritar ★</span>
+              </div>
+
+              <div id="sim-items-grid" class="bg-slate-950/75 border-2 border-slate-700 rounded p-2.5 h-[320px] overflow-y-auto grid grid-cols-8 sm:grid-cols-10 gap-1.5 content-start"></div>
+            </div>
+
+            <!-- TAB 1: PLAYER CHEATS -->
+            <div id="sim-content-1" class="hidden space-y-3 py-1">
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Modificadores do Personagem (Sincronizados) ===</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button onclick="toggleSimCheat('god')" id="btn-cheat-god" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🛡️ God Mode (Invencivel): OFF
+                  </button>
+                  <button onclick="toggleSimCheat('speed')" id="btn-cheat-speed" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    ⚡ Super Velocidade: OFF
+                  </button>
+                  <button onclick="toggleSimCheat('invis')" id="btn-cheat-invis" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    👻 Invisibilidade: OFF
+                  </button>
+                  <button onclick="triggerSimAction('✨ Todos os debuffs negativos foram removidos!', 'CLEAR_DEBUFFS')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    ✨ Limpar Debuffs / Efeitos Ruins
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Restauração Instantânea ===</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button onclick="triggerSimAction('🌟 Vida, Mana, Fome restauradas a 100% e Debuffs limpos!', 'RESTORE_ALL')" class="necesse-btn-green py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🌟 Restaurar TUDO (Vida + Mana + Fome)
+                  </button>
+                  <button onclick="triggerSimAction('❤️ Vida restaurada para 100%!', 'HEAL')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    ❤️ Curar Vida 100%
+                  </button>
+                  <button onclick="triggerSimAction('🔵 Mana restaurada para 100%!', 'RESTORE_MANA')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🔵 Restaurar Mana 100%
+                  </button>
+                  <button onclick="triggerSimAction('🍖 Fome saciada para 100%!', 'RESTORE_HUNGER')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🍖 Saciar Fome 100%
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Moedas de Ouro & Inventário ===</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button onclick="giveSimCoins(1000)" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    💰 Dar +1.000 Moedas
+                  </button>
+                  <button onclick="giveSimCoins(50000)" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    👑 Dar +50.000 Moedas
+                  </button>
+                  <button onclick="clearSimInventory()" class="sm:col-span-2 necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-center">
+                    🗑️ Limpar Mochila (Preserva Hotbar 0-9 e Itens Trancados)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 2: WORLD & MAP CHEATS -->
+            <div id="sim-content-2" class="hidden space-y-3 py-1">
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Controle do Tempo e Horário ===</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button onclick="triggerSimAction('🌅 Horário alterado para MANHÃ (06:00)!', 'SET_DAY')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🌅 Mudar para MANHÃ (06:00)
+                  </button>
+                  <button onclick="triggerSimAction('☀️ Horário alterado para MEIO-DIA (12:00)!', 'SET_NOON')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    ☀️ Mudar para MEIO-DIA (12:00)
+                  </button>
+                  <button onclick="triggerSimAction('🌙 Horário alterado para NOITE (20:00)!', 'SET_NIGHT')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🌙 Mudar para NOITE (20:00)
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Limpeza e Entidades ===</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button onclick="triggerSimAction('💀 Todos os monstros hostis foram eliminados com segurança!', 'KILL_HOSTILES')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    💀 Eliminar Monstros Hostis
+                  </button>
+                  <button onclick="triggerSimAction('🧹 Todos os itens caídos no chão foram removidos!', 'CLEAR_DROPS')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🧹 Limpar Itens do Chão
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Exploração do Mapa ===</div>
+                <button onclick="triggerSimAction('🗺️ Mapa inteiro da ilha revelado (passo 14x14 tiles, sem buracos)!', 'REVEAL_MAP')" class="w-full necesse-btn py-2.5 px-3 rounded text-sm font-semibold text-white text-center">
+                  🗺️ Revelar Mapa da Ilha Inteira (Sem Falhas)
+                </button>
+              </div>
+            </div>
+
+            <!-- TAB 3: VILLAGE & CASTLE BUILDER (NEW!) -->
+            <div id="sim-content-3" class="space-y-3 py-1">
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-1">=== Gerador de Vilarejo Real Completo ===</div>
+                <p class="text-[11px] text-slate-300 mb-2">
+                  Cria Muralha (49x46), Castelo com Trono e Oficinas, 6 Casas de NPC mobiliadas, 2 Salas de Baús e 8 NPCs!
+                </p>
+                <button onclick="buildSimStructure('FULL_VILLAGE')" class="w-full necesse-btn-green py-2.5 px-3 rounded text-sm font-bold text-white text-center shadow-lg">
+                  🏰 GERAR VILAREJO COMPLETO (Castelo + Casas NPC + Salas de Baús)
+                </button>
+              </div>
+
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Construir Estruturas Individuais (Na sua Posição) ===</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button onclick="buildSimStructure('CASTLE_ONLY')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    👑 Construir Castelo Real + Oficinas
+                  </button>
+                  <button onclick="buildSimStructure('CHEST_ROOM_ONLY')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    📦 Construir Sala de Baús (Armazém)
+                  </button>
+                  <button onclick="buildSimStructure('NPC_HOUSE_ONLY')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🏠 Construir Casa de NPC Mobiliada
+                  </button>
+                  <button onclick="buildSimStructure('FLATTEN_AREA')" class="necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-left">
+                    🚜 Limpar e Nivelar Terreno (35x35)
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">=== Povoamento de Moradores (NPCs) ===</div>
+                <button onclick="buildSimStructure('SPAWN_NPCS')" class="w-full necesse-btn py-2 px-3 rounded text-sm font-semibold text-white text-center">
+                  🧑‍🌾 Spawnar 8 NPCs no Vilarejo (Ancião, Ferreiro, Mago, Alquimista, Guarda...)
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: Interactive 2D Blueprint Preview + Packet Log -->
+        <div class="lg:col-span-5 space-y-4">
+          <!-- 2D Village Map Preview -->
+          <div class="rounded-xl bg-slate-900/90 border border-slate-700/80 p-4 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-white uppercase tracking-wider">Planta 2D da Estrutura Gerada</h3>
+                <p id="blueprint-subtitle" class="text-xs text-emerald-400">Vilarejo Real Completo (49x46 tiles)</p>
+              </div>
+              <span class="px-2 py-0.5 text-[11px] font-mono rounded bg-slate-800 text-amber-300 border border-slate-700">VillageGenerator.java</span>
+            </div>
+
+            <div class="flex justify-center bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+              <canvas id="village-canvas" width="392" height="368" class="rounded border border-slate-800 max-w-full"></canvas>
+            </div>
+
+            <!-- Legend -->
+            <div class="grid grid-cols-3 sm:grid-cols-5 gap-1.5 text-[11px] text-slate-300 pt-1">
+              <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-slate-400 inline-block border border-white/20"></span> Castelo/Muro</div>
+              <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-amber-700 inline-block border border-white/20"></span> Casas NPC (6)</div>
+              <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-yellow-400 inline-block border border-white/20"></span> Salas de Baú</div>
+              <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rose-500 inline-block border border-white/20"></span> Trono/Camas</div>
+              <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-emerald-400 inline-block border border-white/20"></span> NPCs / Você</div>
+            </div>
+          </div>
+
+          <!-- Network Packet Log -->
+          <div class="rounded-xl bg-slate-900/90 border border-slate-700/80 p-4 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Log de Pacotes Enviados ao Servidor</span>
+              <span class="text-[11px] text-emerald-400 font-mono">PacketBuildStructure</span>
+            </div>
+            <div id="sim-packet-log" class="bg-slate-950 rounded border border-slate-800 p-2.5 h-[135px] overflow-y-auto font-mono text-[11px] space-y-1.5 text-slate-300"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: TECHNICAL AUDIT & IMPROVEMENTS -->
+    <section id="view-audit" class="hidden space-y-6">
+      <div class="rounded-xl bg-slate-900/90 border border-slate-700/80 p-5">
+        <h2 class="text-xl font-bold text-white mb-2">Resumo da Análise Técnica e Novas Funcionalidades (v2.0.0 → v2.2.0)</h2>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Todos os arquivos em <code class="text-amber-300 bg-slate-800 px-1.5 py-0.5 rounded">src/itemspawner/</code> foram otimizados e expandidos com a nova aba <strong>🏰 Vilarejo</strong> (<code class="text-amber-300 bg-slate-800 px-1.5 py-0.5 rounded">VillageGenerator.java</code> e <code class="text-amber-300 bg-slate-800 px-1.5 py-0.5 rounded">PacketBuildStructure.java</code>).
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="audit-cards"></div>
+    </section>
+
+    <!-- VIEW 3: SOURCE CODE VIEWER -->
+    <section id="view-code" class="hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-3 bg-slate-900/90 border border-slate-700/80 rounded-xl p-3 space-y-1" id="file-list-sidebar"></div>
+        <div class="lg:col-span-9 bg-slate-900/90 border border-slate-700/80 rounded-xl overflow-hidden flex flex-col">
+          <div class="px-4 py-3 bg-slate-950/70 border-b border-slate-800 flex items-center justify-between">
+            <div>
+              <span id="code-title" class="font-mono text-sm font-bold text-amber-300"></span>
+              <span id="code-lines" class="ml-2 text-xs text-slate-400"></span>
+            </div>
+            <button onclick="copyActiveCode()" id="copy-code-btn" class="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold text-white">
+              📋 Copiar Código
+            </button>
+          </div>
+          <pre class="p-4 text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed max-h-[640px] overflow-y-auto"><code id="code-viewer"></code></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // =========================================================================
+    // 1. TECHNICAL AUDIT DATA
+    // =========================================================================
+    const AUDIT_ITEMS = [
+      {
+        file: 'VillageGenerator.java + PacketBuildStructure.java (NOVO)',
+        severity: 'Nova Aba — Gerador de Vilarejo & Castelo',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        title: '1. Nova Aba "🏰 Vilarejo": Castelo Real + 6 Casas de NPC + 2 Salas de Baús',
+        before: 'O mod não possuía construtor de estruturas ou geração automática de vilarejo/base.',
+        after: 'Adicionado gerador procedural completo (49x46 tiles) com Muralha Externa, Castelo Real (Salão do Trono, Aposentos e Ala de Oficinas), 6 Casas Mobiliadas para NPCs, 2 Salas de Baús e Spawn de 8 NPCs.'
+      },
+      {
+        file: 'PacketCheatAction.java',
+        severity: 'Crítico — Bug de Crash no Servidor',
+        badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/40',
+        title: '2. Correção de ConcurrentModificationException em KILL_HOSTILES e CLEAR_DROPS',
+        before: 'Iterava diretamente sobre level.entityManager.mobs e level.entityManager.pickups chamando mob.remove() / p.remove() dentro do próprio loop.',
+        after: 'Implementada cópia defensiva (new ArrayList<>()) filtrando apenas entidades válidas (!mob.removed() && mob.isHostile && !mob.isPlayer) antes de remover com segurança.'
+      },
+      {
+        file: 'ItemSpawnerForm.java',
+        severity: 'Alta — Performance / Queda de FPS',
+        badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+        title: '3. Indexação e Cache em Memória de Todos os Itens',
+        before: 'A cada tecla digitada na pesquisa, o mod chamava ItemRegistry.getDisplayName(item.getID()).toLowerCase() dentro de blocos try/catch para mais de 1.200 itens repetidamente.',
+        after: 'Criada a estrutura CachedItemEntry que pré-carrega e indexa ID, Nome traduzido em minúsculas e Categoria uma única vez ao iniciar o menu.'
+      },
+      {
+        file: 'FormSpawnerItemSlot.java',
+        severity: 'Alta — Otimização de Renderização (FPS)',
+        badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+        title: '4. Viewport Culling e GameBlackboard Compartilhado nos Slots',
+        before: 'Todos os mais de 1.200 slots de itens executavam chamadas de textura a cada frame mesmo fora da área visível de rolagem.',
+        after: 'Adicionada verificação drawArea.intersects(x, y, 32, 32) para desenhar apenas os slots visíveis na tela e reutilizado SHARED_BLACKBOARD estático.'
+      },
+      {
+        file: 'ItemSpawnerForm.java + PacketCheatAction.java',
+        severity: 'Média — Dessincronização de Estado',
+        badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+        title: '5. Sincronização Real-Time dos Buffs (God Mode, Velocidade e Invisibilidade)',
+        before: 'Os botões ON/OFF usavam apenas variáveis booleanas locais que dessincronizavam se o jogador morresse ou removesse o buff.',
+        after: 'Adicionado syncPlayerBuffButtons() que consulta diretamente player.buffManager.hasBuff(...) em tempo real e ampliada a duração para 24h.'
+      },
+      {
+        file: 'ItemSpawnerForm.java + ItemSpawnerMod.java',
+        severity: 'Nova Funcionalidade UX',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        title: '6. Filtros por Categoria + Sistema de Favoritos (★) + Atalhos de Clique',
+        before: 'Listagem única sem categorias, sem favoritos, e clique esquerdo/direito idênticos.',
+        after: '6 categorias (Todos, ★ Fav, Combate, Ferram., Consum., Blocos), Clique Esquerdo (pega qtd), Clique Direito (pega x1) e Clique do Meio (Favorita ★).'
+      },
+      {
+        file: 'ItemSpawnerHotkeyPatchLogic.java',
+        severity: 'Média — Bug de Input / Teclado',
+        badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+        title: '7. Proteção ao Digitar e Detecção de Borda na Tecla ESC',
+        before: 'Se o jogador remapeasse o atalho para uma letra e digitasse na busca ou chat, o menu fechava sozinho.',
+        after: 'Adicionada verificação FormTypingComponent.isCurrentlyTyping() e controle de borda (wasEscapeDown).'
+      },
+      {
+        file: 'ItemSpawnerHudPatchLogic.java + ItemSpawnerForm.java',
+        severity: 'Média — Bug ao Redimensionar Janela',
+        badgeColor: 'bg-sky-500/20 text-sky-300 border-sky-500/40',
+        title: '8. Preservação de Estado no Resize e Cache de Textura do Ícone',
+        before: 'Redimensionar a janela recarregava icon.png do disco e fechava o menu perdendo a aba e a pesquisa.',
+        after: 'Textura em cache estático (cachedButtonTexture) e preservação automática da aba selecionada e busca.'
+      },
+      {
+        file: 'PacketCheatAction.java + ItemSpawnerForm.java',
+        severity: 'Novos Cheats Úteis',
+        badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        title: '9. Restaurar TUDO, Limpar Debuffs, Limpar Mochila e Meio-Dia',
+        before: 'Sem limpeza de debuffs, sem botão de restauração completa e revelação do mapa com passo 25 deixava falhas.',
+        after: 'Adicionados RESTORE_ALL, CLEAR_DEBUFFS, CLEAR_INVENTORY (preservando hotbar/trancados), SET_NOON e revelação de mapa densa (passo 14).'
+      },
+      {
+        file: 'build.ps1',
+        severity: 'Portabilidade & Automação',
+        badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+        title: '10. Detecção Automática de JDK 17+, Steam e %APPDATA% no build.ps1',
+        before: 'Caminhos fixos para "jdk-17.0.20.101-hotspot" e usuário específico.',
+        after: 'Localiza automaticamente qualquer JDK 17+, bibliotecas Steam em múltiplos discos e instala em $env:APPDATA\\Necesse\\mods.'
+      }
+    ];
+
+    function renderAuditCards() {
+      const container = document.getElementById('audit-cards');
+      container.innerHTML = AUDIT_ITEMS.map(item => `
+        <div class="rounded-xl bg-slate-900/90 border border-slate-700/80 p-4 flex flex-col justify-between space-y-3">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="font-mono text-xs text-amber-300 bg-slate-800 px-2 py-0.5 rounded">${item.file}</span>
+              <span class="text-xs px-2 py-0.5 rounded border font-medium ${item.badgeColor}">${item.severity}</span>
+            </div>
+            <h3 class="text-base font-bold text-white">${item.title}</h3>
+          </div>
+          <div class="space-y-2 text-xs">
+            <div class="p-2.5 rounded bg-rose-950/35 border border-rose-800/40 text-slate-300">
+              <span class="font-bold text-rose-300">Antes:</span> ${item.before}
+            </div>
+            <div class="p-2.5 rounded bg-emerald-950/35 border border-emerald-800/40 text-slate-200">
+              <span class="font-bold text-emerald-300">Agora (v2.2):</span> ${item.after}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 2. 2D VILLAGE BLUEPRINT RENDERER (EXACT REPLICA OF VillageGenerator.java)
+    // =========================================================================
+    function drawVillageBlueprint(mode) {
+      const canvas = document.getElementById('village-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = 49;
+      const H = 46;
+      const S = 8; // 8px per tile -> 392x368
+
+      // Base grass
+      ctx.fillStyle = '#1e3a29';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Subtle grid
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      for (let x = 0; x <= W; x++) {
+        ctx.beginPath(); ctx.moveTo(x * S, 0); ctx.lineTo(x * S, H * S); ctx.stroke();
+      }
+      for (let y = 0; y <= H; y++) {
+        ctx.beginPath(); ctx.moveTo(0, y * S); ctx.lineTo(W * S, y * S); ctx.stroke();
+      }
+
+      const tile = (x, y, w, h, color) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(x * S, y * S, w * S, h * S);
+      };
+
+      const border = (x, y, w, h, color) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(x * S, y * S, w * S, S);
+        ctx.fillRect(x * S, (y + h - 1) * S, w * S, S);
+        ctx.fillRect(x * S, y * S, S, h * S);
+        ctx.fillRect((x + w - 1) * S, y * S, S, h * S);
+      };
+
+      const drawCastleAt = (sx, sy) => {
+        // Stone brick floor 19x14
+        tile(sx, sy, 19, 14, '#334155');
+        // Royal carpet
+        tile(sx + 8, sy + 2, 3, 11, '#7f1d1d');
+        // Outer stone walls
+        border(sx, sy, 19, 14, '#94a3b8');
+        // 4 corner towers (3x3)
+        border(sx, sy, 3, 3, '#cbd5e1');
+        border(sx + 16, sy, 3, 3, '#cbd5e1');
+        border(sx, sy + 11, 3, 3, '#cbd5e1');
+        border(sx + 16, sy + 11, 3, 3, '#cbd5e1');
+        // Wing dividers
+        tile(sx + 5, sy + 1, 1, 12, '#94a3b8');
+        tile(sx + 13, sy + 1, 1, 12, '#94a3b8');
+        // Doors
+        tile(sx + 5, sy + 6, 1, 2, '#d97706');
+        tile(sx + 13, sy + 6, 1, 2, '#d97706');
+        tile(sx + 8, sy + 13, 3, 1, '#d97706');
+        // Throne & Royal bed & Crafting stations
+        tile(sx + 9, sy + 2, 1, 1, '#f43f5e'); // Throne
+        tile(sx + 2, sy + 4, 2, 1, '#f43f5e'); // Royal Bed
+        tile(sx + 2, sy + 9, 2, 1, '#facc15'); // Royal Chests
+        tile(sx + 15, sy + 4, 2, 5, '#38bdf8'); // Crafting Anvil/Forge/Workstations
+      };
+
+      const drawHouseAt = (sx, sy, doorRight) => {
+        tile(sx, sy, 8, 6, '#78350f');
+        border(sx, sy, 8, 6, '#b45309');
+        // Door
+        tile(doorRight ? sx + 7 : sx, sy + 3, 1, 1, '#fde047');
+        // Bed
+        tile(doorRight ? sx + 1 : sx + 5, sy + 1, 2, 1, '#f43f5e');
+        // Chest & Table
+        tile(sx + 3, sy + 4, 1, 1, '#facc15');
+        tile(sx + 3, sy + 1, 2, 1, '#d97706');
+      };
+
+      const drawChestRoomAt = (sx, sy) => {
+        tile(sx, sy, 13, 9, '#1e293b');
+        tile(sx + 1, sy + 4, 11, 1, '#78350f'); // Wood aisle
+        border(sx, sy, 13, 9, '#94a3b8');
+        tile(sx + 5, sy, 2, 1, '#d97706'); // Double Door
+        // 4 rows of chests
+        [sy + 1, sy + 3, sy + 5, sy + 7].forEach(ry => {
+          for (let cx = sx + 2; cx < sx + 11; cx++) {
+            if (Math.abs(cx - (sx + 6)) <= 1) continue;
+            tile(cx, ry, 1, 1, '#facc15');
+          }
+        });
+      };
+
+      if (mode === 'FULL_VILLAGE' || mode === 'SPAWN_NPCS') {
+        // Outer Perimeter Wall with 4 gates
+        border(0, 0, W, H, '#64748b');
+        // Main Stone Roads
+        tile(22, 1, 5, H - 2, '#475569');
+        tile(1, 29, W - 2, 3, '#475569');
+        // Central Plaza
+        tile(20, 27, 9, 7, '#64748b');
+
+        // Castle North
+        drawCastleAt(15, 2);
+
+        // 6 NPC Houses (3 West, 3 East)
+        [17, 24, 31].forEach(hy => {
+          drawHouseAt(13, hy, true);
+          drawHouseAt(28, hy, false);
+        });
+
+        // 2 Chest Rooms (South-West & South-East)
+        drawChestRoomAt(2, 35);
+        drawChestRoomAt(34, 35);
+
+        // NPCs & Player markers
+        const npcs = [
+          [24, 10], [17, 20], [17, 27], [17, 34],
+          [31, 20], [31, 27], [31, 34], [22, 30]
+        ];
+        npcs.forEach(([nx, ny]) => tile(nx, ny, 1, 1, '#34d399'));
+      } else if (mode === 'CASTLE_ONLY') {
+        drawCastleAt(15, 16);
+      } else if (mode === 'CHEST_ROOM_ONLY') {
+        drawChestRoomAt(18, 18);
+      } else if (mode === 'NPC_HOUSE_ONLY') {
+        drawHouseAt(20, 20, true);
+      } else if (mode === 'FLATTEN_AREA') {
+        tile(7, 5, 35, 35, '#2dd4bf33');
+        border(7, 5, 35, 35, '#34d399');
+      }
+
+      // Player center marker
+      tile(24, 30, 1, 1, '#22c55e');
+    }
+
+    function buildSimStructure(type) {
+      const titles = {
+        FULL_VILLAGE: 'Vilarejo Real Completo (Castelo + 6 Casas NPC + 2 Salas de Baús + 8 NPCs)',
+        CASTLE_ONLY: 'Castelo Real Individual (Salão do Trono + Aposentos + Oficinas)',
+        CHEST_ROOM_ONLY: 'Sala de Baús / Armazém Real (28 Baús Organizados)',
+        NPC_HOUSE_ONLY: 'Casa de NPC Mobiliada (Cama, Mesa, Cadeira, Baú e Tocha)',
+        FLATTEN_AREA: 'Terreno Limpo e Nivelado (35x35 tiles ao redor do jogador)',
+        SPAWN_NPCS: '8 NPCs Moradores Spawnados (Ancião, Ferreiro, Mago, Alquimista, Guarda...)'
+      };
+      document.getElementById('blueprint-subtitle').textContent = titles[type] || type;
+      drawVillageBlueprint(type);
+      logPacket('PacketBuildStructure', `type=${type} -> ${titles[type]}`);
+    }
+
+    // =========================================================================
+    // 3. INTERACTIVE SIMULATOR DATA & LOGIC
+    // =========================================================================
+    const SIM_ITEMS = [
+      { id: 'reaperscythe', name: 'Foice do Ceifador', cat: 'COMBAT', stack: 1, icon: '⚔️' },
+      { id: 'antiquesword', name: 'Espada Antiga', cat: 'COMBAT', stack: 1, icon: '🗡️' },
+      { id: 'venomstaff', name: 'Cajado Venenoso', cat: 'COMBAT', stack: 1, icon: '🪄' },
+      { id: 'arachnidbow', name: 'Arco Aracnídeo', cat: 'COMBAT', stack: 1, icon: '🏹' },
+      { id: 'handcannon', name: 'Canhão de Mão', cat: 'COMBAT', stack: 1, icon: '🔫' },
+      { id: 'glacialhelmet', name: 'Elmo Glacial', cat: 'COMBAT', stack: 1, icon: '🪖' },
+      { id: 'myceliumchestplate', name: 'Peitoral de Micélio', cat: 'COMBAT', stack: 1, icon: '🦺' },
+      { id: 'tungstenpickaxe', name: 'Picareta de Tungstênio', cat: 'TOOLS', stack: 1, icon: '⛏️' },
+      { id: 'glacialaxe', name: 'Machado Glacial', cat: 'TOOLS', stack: 1, icon: '🪓' },
+      { id: 'goldfishingrod', name: 'Vara de Pesca de Ouro', cat: 'TOOLS', stack: 1, icon: '🎣' },
+      { id: 'greaterhealthpotion', name: 'Poção de Vida Maior', cat: 'CONSUMABLES', stack: 100, icon: '🧪' },
+      { id: 'greatermanapotion', name: 'Poção de Mana Maior', cat: 'CONSUMABLES', stack: 100, icon: '💧' },
+      { id: 'battlepotion', name: 'Elixir de Batalha', cat: 'CONSUMABLES', stack: 50, icon: '⚗️' },
+      { id: 'blueberrycake', name: 'Bolo de Mirtilo', cat: 'CONSUMABLES', stack: 50, icon: '🍰' },
+      { id: 'stonewall', name: 'Parede de Pedra', cat: 'BLOCKS', stack: 500, icon: '🧱' },
+      { id: 'oakchest', name: 'Baú de Carvalho', cat: 'BLOCKS', stack: 100, icon: '📦' },
+      { id: 'workstation', name: 'Bancada de Trabalho', cat: 'BLOCKS', stack: 50, icon: '🔨' },
+      { id: 'torch', name: 'Tocha', cat: 'BLOCKS', stack: 500, icon: '🔥' },
+      { id: 'goldbar', name: 'Barra de Ouro', cat: 'ALL', stack: 250, icon: '🪙' },
+      { id: 'coin', name: 'Moeda de Ouro', cat: 'ALL', stack: 5000, icon: '💰' }
+    ];
+
+    const CATEGORIES = [
+      { key: 'ALL', label: 'Todos' },
+      { key: 'FAVORITES', label: '★ Fav' },
+      { key: 'COMBAT', label: 'Combate' },
+      { key: 'TOOLS', label: 'Ferram.' },
+      { key: 'CONSUMABLES', label: 'Consum.' },
+      { key: 'BLOCKS', label: 'Blocos' }
+    ];
+
+    let simAmount = 1;
+    let simMaxStack = false;
+    let simCategory = 'ALL';
+    let simFavorites = new Set(['reaperscythe', 'greaterhealthpotion']);
+    let simCheats = { god: false, speed: false, invis: false };
+
+    function initSimulator() {
+      renderAmountButtons();
+      renderCategoryButtons();
+      renderSimItems();
+      drawVillageBlueprint('FULL_VILLAGE');
+      logPacket('Sistema', 'Cheat Menu v2.2.0 pronto! Aba "🏰 Vilarejo" selecionada para demonstração.');
+    }
+
+    function renderAmountButtons() {
+      const amounts = [1, 5, 10, 50];
+      const container = document.getElementById('sim-amount-btns');
+      let html = amounts.map(amt => {
+        const active = !simMaxStack && simAmount === amt;
+        return `<button onclick="setSimAmount(${amt}, false)" class="${active ? 'necesse-btn-green' : 'necesse-btn'} px-2.5 py-1 rounded text-xs font-bold text-white">x${amt}</button>`;
+      }).join('');
+      html += `<button onclick="setSimAmount(1, true)" class="${simMaxStack ? 'necesse-btn-green' : 'necesse-btn'} px-2.5 py-1 rounded text-xs font-bold text-white">Max</button>`;
+      container.innerHTML = html;
+    }
+
+    function setSimAmount(amt, isMax) {
+      simAmount = amt;
+      simMaxStack = isMax;
+      renderAmountButtons();
+    }
+
+    function renderCategoryButtons() {
+      const container = document.getElementById('sim-category-btns');
+      container.innerHTML = CATEGORIES.map(cat => {
+        const active = simCategory === cat.key;
+        return `<button onclick="setSimCategory('${cat.key}')" class="${active ? 'necesse-btn-green' : 'necesse-btn'} py-1 px-1.5 rounded text-xs font-semibold text-white truncate">${cat.label}</button>`;
+      }).join('');
+    }
+
+    function setSimCategory(catKey) {
+      simCategory = catKey;
+      renderCategoryButtons();
+      renderSimItems();
+    }
+
+    function renderSimItems() {
+      const q = (document.getElementById('sim-search').value || '').trim().toLowerCase();
+      const grid = document.getElementById('sim-items-grid');
+
+      const filtered = SIM_ITEMS.filter(item => {
+        if (simCategory === 'FAVORITES' && !simFavorites.has(item.id)) return false;
+        if (simCategory !== 'ALL' && simCategory !== 'FAVORITES' && item.cat !== simCategory) return false;
+        if (q && !item.id.includes(q) && !item.name.toLowerCase().includes(q)) return false;
+        return true;
+      });
+
+      document.getElementById('sim-item-count').textContent = `Itens: ${filtered.length} / ${SIM_ITEMS.length}`;
+
+      grid.innerHTML = filtered.map(item => {
+        const isFav = simFavorites.has(item.id);
+        return `
+          <div
+            onmousedown="handleSlotMouseDown(event, '${item.id}')"
+            oncontextmenu="event.preventDefault()"
+            title="${item.name}\nID: ${item.id} (Stack Max: ${item.stack})\n[Esq] Pegar Qtd | [Dir] Pegar x1 | [Meio/Alt+Clique] Favoritar"
+            class="necesse-slot ${isFav ? 'necesse-slot-fav' : ''} relative h-12 rounded flex flex-col items-center justify-center cursor-pointer select-none"
+          >
+            ${isFav ? '<span class="absolute top-0.5 left-1 text-[10px] text-amber-300 font-bold">★</span>' : ''}
+            <span class="text-lg leading-none">${item.icon}</span>
+            <span class="text-[9px] text-slate-300 truncate max-w-[90%] mt-0.5">${item.name.split(' ')[0]}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleSlotMouseDown(event, itemId) {
+      event.preventDefault();
+      const item = SIM_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+
+      if (event.button === 1 || event.altKey) {
+        if (simFavorites.has(itemId)) {
+          simFavorites.delete(itemId);
+          logPacket('Favorito', `Removido dos favoritos: ${item.name}`);
+        } else {
+          simFavorites.add(itemId);
+          logPacket('Favorito', `★ Adicionado aos favoritos: ${item.name}`);
+        }
+        renderSimItems();
+        return;
+      }
+
+      const count = event.button === 2 ? 1 : (simMaxStack ? item.stack : simAmount);
+      logPacket('PacketGiveItem', `ID="${item.id}", amount=${count} -> Entregue ao inventário!`);
+    }
+
+    function giveSimCoins(amount) {
+      logPacket('PacketGiveItem', `ID="coin", amount=${amount} -> +${amount.toLocaleString('pt-BR')} moedas!`);
+    }
+
+    function clearSimInventory() {
+      logPacket('PacketCheatAction', 'CLEAR_INVENTORY -> Mochila limpa (Hotbar e itens trancados preservados)!');
+    }
+
+    function selectSimTab(idx) {
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`sim-content-${i}`).classList.toggle('hidden', i !== idx);
+        const btn = document.getElementById(`sim-tab-${i}`);
+        btn.className = (i === idx)
+          ? 'necesse-btn-green py-1.5 rounded font-semibold text-xs sm:text-sm text-white'
+          : 'necesse-btn py-1.5 rounded font-semibold text-xs sm:text-sm text-white';
+      }
+    }
+
+    function toggleSimCheat(key) {
+      simCheats[key] = !simCheats[key];
+      const labels = {
+        god: { text: '🛡️ God Mode (Invencivel)', packet: 'TOGGLE_GODMODE' },
+        speed: { text: '⚡ Super Velocidade', packet: 'TOGGLE_SPEED' },
+        invis: { text: '👻 Invisibilidade', packet: 'TOGGLE_INVIS' }
+      };
+      const btn = document.getElementById(`btn-cheat-${key}`);
+      const active = simCheats[key];
+      btn.className = `${active ? 'necesse-btn-green' : 'necesse-btn'} py-2 px-3 rounded text-sm font-semibold text-white text-left`;
+      btn.textContent = `${labels[key].text}: ${active ? 'ON' : 'OFF'}`;
+      logPacket('PacketCheatAction', `${labels[key].packet} -> ${active ? 'ATIVADO (24h sync)' : 'DESATIVADO'}`);
+    }
+
+    function triggerSimAction(msg, packetType) {
+      logPacket('PacketCheatAction', `${packetType} -> ${msg}`);
+    }
+
+    function logPacket(type, message) {
+      const log = document.getElementById('sim-packet-log');
+      const time = new Date().toLocaleTimeString('pt-BR');
+      const div = document.createElement('div');
+      div.innerHTML = `<span class="text-slate-500">[${time}]</span> <span class="text-emerald-400 font-semibold">[${type}]</span> ${message}`;
+      log.prepend(div);
+    }
+
+    // =========================================================================
+    // 4. SOURCE CODE VIEWER
+    // =========================================================================
+    let loadedFiles = [];
+    let activeFileIndex = 0;
+
+    async function loadSourceFiles() {
+      try {
+        const res = await fetch('/api/files');
+        loadedFiles = await res.json();
+        renderFileSidebar();
+        selectSourceFile(1); // Default to VillageGenerator.java
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderFileSidebar() {
+      const sidebar = document.getElementById('file-list-sidebar');
+      sidebar.innerHTML = loadedFiles.map((file, idx) => {
+        const active = idx === activeFileIndex;
+        return `
+          <button
+            onclick="selectSourceFile(${idx})"
+            class="w-full text-left px-3 py-2 rounded-lg text-xs font-medium flex items-center justify-between transition ${
+              active ? 'bg-emerald-600 text-white shadow' : 'text-slate-300 hover:bg-slate-800'
+            }"
+          >
+            <span class="truncate font-mono">${file.title}</span>
+            <span class="text-[10px] opacity-75">${file.lines}L</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectSourceFile(idx) {
+      activeFileIndex = idx;
+      const file = loadedFiles[idx];
+      if (!file) return;
+      renderFileSidebar();
+      document.getElementById('code-title').textContent = file.path;
+      document.getElementById('code-lines').textContent = `(${file.lines} linhas)`;
+      document.getElementById('code-viewer').textContent = file.content;
+    }
+
+    function copyActiveCode() {
+      const file = loadedFiles[activeFileIndex];
+      if (!file) return;
+      navigator.clipboard.writeText(file.content);
+      const btn = document.getElementById('copy-code-btn');
+      btn.textContent = '✅ Copiado!';
+      setTimeout(() => { btn.textContent = '📋 Copiar Código'; }, 1500);
+    }
+
+    function switchMainView(view) {
+      ['simulator', 'audit', 'code'].forEach(v => {
+        document.getElementById(`view-${v}`).classList.toggle('hidden', v !== view);
+        const btn = document.getElementById(`nav-${v}`);
+        btn.className = (v === view)
+          ? 'px-3.5 py-1.5 rounded text-sm font-medium bg-emerald-600 text-white shadow'
+          : 'px-3.5 py-1.5 rounded text-sm font-medium bg-slate-800 text-slate-300 hover:bg-slate-700';
+      });
+    }
+
+    renderAuditCards();
+    initSimulator();
+    loadSourceFiles();
+  </script>
+</body>
+</html>

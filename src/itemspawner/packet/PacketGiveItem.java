@@ -11,6 +11,9 @@ import necesse.inventory.InventoryItem;
 import necesse.inventory.item.Item;
 
 public class PacketGiveItem extends Packet {
+
+    private static final int MAX_SPAWN_AMOUNT = 99999;
+
     public final String itemStringID;
     public final int amount;
 
@@ -22,23 +25,25 @@ public class PacketGiveItem extends Packet {
     }
 
     public PacketGiveItem(String itemStringID, int amount) {
-        this.itemStringID = itemStringID;
-        this.amount = amount;
+        this.itemStringID = itemStringID == null ? "" : itemStringID.trim();
+        this.amount = Math.max(1, Math.min(amount, MAX_SPAWN_AMOUNT));
         PacketWriter writer = new PacketWriter(this);
-        writer.putNextStringLong(itemStringID);
-        writer.putNextInt(amount);
+        writer.putNextStringLong(this.itemStringID);
+        writer.putNextInt(this.amount);
     }
 
     @Override
     public void processServer(NetworkPacket packet, Server server, ServerClient serverClient) {
-        if (serverClient != null && serverClient.playerMob != null) {
-            Item item = ItemRegistry.getItem(this.itemStringID);
-            if (item != null) {
-                int count = Math.max(1, this.amount);
-                InventoryItem invItem = new InventoryItem(item, count);
-                serverClient.playerMob.getInv().addItemsDropRemaining(invItem, "itemspawner", serverClient.playerMob, true, false);
-                serverClient.playerMob.getInv().markFullDirty();
-            }
+        if (serverClient == null || serverClient.playerMob == null || this.itemStringID == null || this.itemStringID.isEmpty()) {
+            return;
+        }
+
+        Item item = ItemRegistry.getItem(this.itemStringID);
+        if (item != null) {
+            int count = Math.max(1, Math.min(this.amount, MAX_SPAWN_AMOUNT));
+            InventoryItem invItem = new InventoryItem(item, count);
+            serverClient.playerMob.getInv().addItemsDropRemaining(invItem, "itemspawner", serverClient.playerMob, true, false);
+            serverClient.playerMob.getInv().markFullDirty();
         }
     }
 }
