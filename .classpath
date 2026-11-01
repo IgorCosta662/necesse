@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/Necesse.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/byte-buddy-1.12.8.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/byte-buddy-agent-1.12.8.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/jna-5.10.0.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/jna-platform-5.10.0.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-3.4.1-natives-linux.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-3.4.1-natives-macos-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-3.4.1-natives-macos.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-3.4.1-natives-windows.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-3.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-glfw-3.4.1-natives-linux.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-glfw-3.4.1-natives-macos-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-glfw-3.4.1-natives-macos.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-glfw-3.4.1-natives-windows.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-glfw-3.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-openal-3.4.1-natives-linux.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-openal-3.4.1-natives-macos-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-openal-3.4.1-natives-macos.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-openal-3.4.1-natives-windows.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-openal-3.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-opengl-3.4.1-natives-linux.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-opengl-3.4.1-natives-macos-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-opengl-3.4.1-natives-macos.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-opengl-3.4.1-natives-windows.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-opengl-3.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-stb-3.4.1-natives-linux.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-stb-3.4.1-natives-macos-arm64.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-stb-3.4.1-natives-macos.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-stb-3.4.1-natives-windows.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/lwjgl-stb-3.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/oshi-core-5.8.5.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/slf4j-api-1.7.32.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/slf4j-nop-1.7.30.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/Steam/steamapps/common/Necesse/lib/steamworks4j-1.10.2-FAIR.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

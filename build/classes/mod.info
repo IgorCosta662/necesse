@@ -1,0 +1,9 @@
+{
+	id = itemspawner,
+	name = Necesse Cheat Menu and Item Spawner,
+	version = 2.0.0,
+	gameVersion = 1.3.3,
+	author = Medeiros,
+	description = Menu Cheat completo com God Mode, Super Velocidade, Restauracao de Vida e Mana, Moedas, Controle de Tempo, Limpeza de Monstros e Spawner de Itens.,
+	clientside = false
+}
